@@ -1,0 +1,16 @@
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# OSX
+.DS_Store
+
+# Vim
+*.swp
+*.swo
+
+#
+*.bak
+*.bkp
