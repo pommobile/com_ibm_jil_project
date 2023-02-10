@@ -3,6 +3,7 @@
 
 Backends are developed in Quarkus and run in Jboss.  
 Frontents are developed in Carbon Design Angular and run in NodeJS.  
+Events run in Kafka.
 Databases run in PostgreSQL.  
 
 ## Visit repositories
@@ -70,7 +71,7 @@ The project is comprised of 3 sub projects:
 - astro (i.e. astrology), used by jil, at run time. It provides planet positions (i.e. ephemeris) for a century and an astrological matching algorithm between 2 days.
 - jil (i.e. Just in Love). For users who provide their profile, criteria and geolocation, it provides the users that match the astrological algorithm and criteria.
 
-![](architecture/architecture-macro.png)
+![](images/architecture-macro.png)
 
 ## Architecture of shared
 
@@ -80,7 +81,7 @@ Shared consists of:
 - a user identity frontend. It manage users.  
 - a database. It stores users.
 
-![](architecture/architecture-shared.png)
+![](images/architecture-shared.png)
 
 ## Architecture of astro
 
@@ -91,7 +92,7 @@ Shared consists of:
 - a match backend. It implements the astrological matching algorithm between 2 days.  
 - a match fontend. It displays the astrological matching between 2 given days.  
 
-![](architecture/architecture-astro.png)
+![](images/architecture-astro.png)
 
 ## Architecture of jil
 
@@ -109,7 +110,7 @@ Shared consists of:
 - a kafka server. It echoes users' creation, update and deletion on profile, criteria and geolocation. It notifies the match maker of any.
 - a match maker backend. On notification, it computes the matches (astrology and criteria) of a user. It uses (http) the matches backend as output and all the other backends as inputs.
 
-![](architecture/architecture-jil.png)
+![](images/architecture-jil.png)
 
 # Run
 
@@ -123,8 +124,9 @@ Shared consists of:
 
 Docker  
 All the above repositories cloned  
+Be in the top directory of your cloned repositories
 
-### Create network & containers
+### Run network & containers
 
 Create the docker shared network
 
@@ -132,13 +134,13 @@ Create the docker shared network
 
 Run containers in that specific order
 
-`./com_ibm_shared_users_back/application/src/main/docker/run.sh`  
 `./com_ibm_shared_databases/src/main/docker/run.sh`  
 `./com_ibm_shared_users_back/application/src/main/docker/run.sh`  
 `./com_ibm_shared_users_front/src/main/docker/run.sh`  
 
-Check the shared sub project runs ok by opening a web browser at localhost:4200
-Login with administrator/administrator
+Check the shared sub project runs ok by opening a web browser at localhost:4200  
+Login with administrator/administrator  
+![](images/login.png)  
 
 `./com_ibm_astro_databases/src/main/docker/run.sh`  
 `./com_ibm_astro_ephemeris_back/application/src/main/docker/run.sh`  
@@ -146,8 +148,9 @@ Login with administrator/administrator
 `./com_ibm_astro_match_back/application/src/main/docker/run.sh`  
 `./com_ibm_astro_match_front/src/main/docker/run.sh`  
 
-Check the astro sub project runs ok by opening a web browser at localhost:4205
-Match 1930-01-01 as date1 and date2
+Check the astro sub project runs ok by opening a web browser at localhost:4205  
+Match 2000-01-01 as date1 with 2000-12-31 date2  
+![](images/astro_match.png)  
 
 `./com_ibm_jil_databases/src/main/docker/run.sh`  
 `./com_ibm_jil_definitions_back/application/src/main/docker/run.sh`  
@@ -169,26 +172,78 @@ Check the jil sub project runs ok by opening a web browser at localhost:4206
 
 ### Prerequisites
 
-Docker  
 All the above repositories cloned  
 Jdk  
 Maven  
-Postgre (server)  
+PostgreSQL (server)  
 pgAdmin (client)  
+Kafka  
+Install as described below  
+Build as described below  
 
 ### Install
 
 With pgAdmin  
 Keep the default server/5432 for the shared databases  
+Create a users database in the shared server  
 Create a server/5433 for the astro databases  
+Create a ephemeris database in the astro server  
 Create a server/5434 for the jil databases  
+Create a definitions database in the jil server  
+Create a profiles database in the jil server  
+Create a criteria database in the jil server  
+Create a geolocations database in the jil server  
+Create a matches database in the jil server  
 
 ### Build
 
+All components are built using maven, whatever the type  
+Build the shared library first  
+
+`cd com_ibm_shared_utils_lib; mvn -DskipTests install; cd ..`  
+
+Then compile all the others
+
+`for dir in $(ls); do; echo $dir; cd $dir; mvn -DskipTests compile; cd ..; done`
+
+### Run
+
+Keep the PostreSQL servers running  
+Run the kafka server first in 2 terminals  
+`cd $KAFKA_DIR`  
+`bin/zookeeper-server-start.sh config/zookeeper.properties`  
+`cd $KAFKA_DIR`  
+`bin/kafka-server-start.sh config/server.properties`  
+
+All backends are run using quarkus in dev mode  
+Start the backends in that specific order in separate terminals  
+
+`cd com_ibm_shared_users_back; mvn -DskipTests quarkus:dev`  
+`cd com_ibm_astro_ephemeris_back; mvn -DskipTests quarkus:dev`  
+`cd com_ibm_astro_match_back; mvn -DskipTests quarkus:dev`  
+`cd com_ibm_jil_definitions_back; mvn -DskipTests quarkus:dev`  
+`cd com_ibm_jil_definitions_back; mvn -DskipTests quarkus:dev`  
+`cd com_ibm_jil_profiles_front; mvn -DskipTests quarkus:dev`  
+`cd com_ibm_jil_criteria_back; mvn -DskipTests quarkus:dev`  
+`cd com_ibm_jil_geolocations_back; mvn -DskipTests quarkus:dev`  
+`cd com_ibm_jil_matches_back; mvn -DskipTests quarkus:dev`  
+`cd com_ibm_jil_matches_maker; mvn -DskipTests quarkus:dev`  
+
+All frontends are run using ng in dev mode  
+Start the frontends in separate terminals  
+
+`cd com_ibm_shared_users_front; ng serve`  
+`cd com_ibm_astro_ephemeris_front; ng serve`  
+`cd com_ibm_astro_match_front; ng serve`  
+`cd com_ibm_jil_definitions_front; ng serve`  
+`cd com_ibm_jil_profiles_front; ng serve`  
+`cd com_ibm_jil_criteria_front; ng serve`  
+`cd com_ibm_jil_geolocations_front; ng serve`  
+`cd com_ibm_jil_matches_front; ng serve`  
 
 # Use
 
-Create a user, profile, criteria, geolocation, as described in each repository readme
-Find a match birthdate for that user's birthdate  
-Create the matching user, profile, criteria, geolocation
-Check the match is found by opening a web browser at localhost:4206
+Create a user, profile, criteria, geolocation, as described in each repository readme  
+Find a birthdate that matches that user's birthdate, as described in the astro match readme  
+Create the matching user, profile, criteria, geolocation  
+Check the match is found by opening a web browser at localhost:4206  
