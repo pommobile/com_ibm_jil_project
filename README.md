@@ -6,12 +6,10 @@ Frontents are developed in Carbon Design Angular and run in NodeJS.
 Events run in Kafka.  
 Databases run in PostgreSQL.  
 
-## Visit repositories
-
 Each repository maps to 1 artifact of type:
 - library
-- database server with 1 or many databases
-- event server with many topics
+- database server with 1 or several databases
+- event server with several topics
 - frontend web server
 - backend application server
 
@@ -37,9 +35,6 @@ Each repository maps to 1 artifact of type:
 [Jil matches back] (https://github.com/pommobile/com_ibm_jil_matches_back)  
 [Jil matches front] (https://github.com/pommobile/com_ibm_jil_matches_front)  
 [Jil matches maker] (https://github.com/pommobile/com_ibm_jil_matches_maker)  
-
-
-## Clone repositories
 
 `git clone https://github.com/pommobile/com_ibm_shared_utils_lib`  
 `git clone https://github.com/pommobile/com_ibm_shared_databases`  
@@ -245,7 +240,8 @@ Start the frontends in separate terminals.
 
 ## Warnings
 
-- No SSO between each frontend
+- There is no SSO between frontends
+- Tokens expire after 4 hours 
 - Look & feel is basic
 - Dates have to be typed in YYYY-MM-DD format
 - Inputs are not validated on the frontends
