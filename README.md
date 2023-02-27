@@ -23,8 +23,8 @@ Each repository maps to 1 artifact of type:
 [Astro match back] (https://github.com/pommobile/com_ibm_astro_match_back)  
 [Astro match front] (https://github.com/pommobile/com_ibm_astro_match_front)  
 [Jil databases] (https://github.com/pommobile/com_ibm_jil_databases)  
-[Jil defintions back] (https://github.com/pommobile/com_ibm_jil_definitions_back)  
-[Jil defintions front] (https://github.com/pommobile/com_ibm_jil_definitions_front)  
+[Jil definitions back] (https://github.com/pommobile/com_ibm_jil_definitions_back)  
+[Jil definitions front] (https://github.com/pommobile/com_ibm_jil_definitions_front)  
 [Jil kafka] (https://github.com/pommobile/com_ibm_jil_kafka)  
 [Jil profiles back] (https://github.com/pommobile/com_ibm_jil_profiles_back)  
 [Jil profiles front] (https://github.com/pommobile/com_ibm_jil_profiles_front)  
@@ -143,7 +143,7 @@ Login with administrator/administrator.
 `./com_ibm_astro_match_back/application/src/main/docker/run.sh`  
 `./com_ibm_astro_match_front/src/main/docker/run.sh`  
 
-Check the astro sub project runs ok by opening a web browser at localhost:4205.  
+Check the astro sub project runs ok by opening a web browser at localhost:4201.  
 Match 2000-01-01 as date1 with 2000-12-31 date2.  
 ![](images/astro_match.png)  
 
@@ -161,7 +161,7 @@ Match 2000-01-01 as date1 with 2000-12-31 date2.
 `./com_ibm_jil_matches_front/src/main/docker/run.sh`  
 `./com_ibm_jil_matches_maker/application/src/main/docker/run.sh`  
 
-Check the jil sub project runs ok by opening a web browser at localhost:4206.
+Check the jil sub project runs ok by opening a web browser at localhost:4202.
 ![](images/jil_match.png)  
 
 ## Run on localhost
@@ -252,4 +252,4 @@ Start the frontends in separate terminals.
 Create a user, profile, criteria, geolocation, as described in each repository readme.  
 Find a birthdate that matches that user's birthdate, as described in the astro match readme.  
 Create the matching user, profile, criteria, geolocation.  
-Check the match is found by opening a web browser at localhost:4206.  
+Check the match is found by opening a web browser at localhost:4207.  
