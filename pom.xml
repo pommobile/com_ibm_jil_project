@@ -6,7 +6,10 @@
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
-    <maven.sortpom.plugin.version>3.0.1</maven.sortpom.plugin.version>
+    <sortpom.version>3.2.1</sortpom.version>
+    <clean.version>3.2.0</clean.version>
+    <install.version>3.1.0</install.version>
+    <deploy.version>3.1.0</deploy.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
@@ -16,7 +19,19 @@
         <plugin>
           <groupId>com.github.ekryd.sortpom</groupId>
           <artifactId>sortpom-maven-plugin</artifactId>
-          <version>${maven.sortpom.plugin.version}</version>
+          <version>${sortpom.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${clean.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${install.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>${deploy.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -29,9 +44,23 @@
             <goals>
               <goal>sort</goal>
             </goals>
-            <phase>validate</phase>
+            <phase>compile</phase>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
       </plugin>
     </plugins>
   </build>
